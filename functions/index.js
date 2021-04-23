@@ -1,11 +1,13 @@
-const functions = require('firebase-functions')
+const functions = require('firebase-functions');
+const firebase = require("firebase-admin");
+firebase.initializeApp({
+    storageBucket: functions.config().project.storagebucket
+})
 
-// Create and Deploy Your First Cloud Functions
-// https://firebase.google.com/docs/functions/write-firebase-functions
+const room = require("./room");
+const game = require("./game");
+const question = require("./question");
 
-exports.helloWorld = functions
-  .region('asia-southeast2')
-  .https.onRequest((request, response) => {
-    functions.logger.info('Hello logs!', { structuredData: true })
-    response.send('Hello from Firebase!')
-  })
+exports.room = functions.region("asia-east2").https.onRequest(room);
+exports.game = functions.region("asia-east2").https.onRequest(game);
+exports.question = functions.region("asia-east2").https.onRequest(question);
