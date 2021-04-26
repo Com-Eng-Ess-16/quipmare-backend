@@ -10,8 +10,8 @@ module.exports = async (req,res)=>{
         snapshot = await dbRef.child(code).get();
     }
     dbRef.child(code).set({
-        gameState: 0,
-        updateTime: Date.now()
+        roomState: "waiting",
+        updateTime: Date.now(),
     })
     return res.json({
         roomcode :code
