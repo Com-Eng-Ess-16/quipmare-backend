@@ -6,7 +6,7 @@ const joinRoom = require("./joinRoom")
 const createRoom = require("./createRoom")
 
 router.get("/create", createRoom);
-router.get("/join/:roomcode", joinRoom);
+router.post("/join/:roomcode", joinRoom);
 router.get("/check/:roomcode", checkRoom);
 
 const app = express()
