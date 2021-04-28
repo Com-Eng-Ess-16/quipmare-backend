@@ -4,6 +4,7 @@ const router = express.Router()
 const startGame = require("./startGame")
 
 router.get("/start/:roomcode", startGame);
+router.get("/:roomcode", startGame);
 
 const app = express()
 const cors = require("cors")

@@ -67,7 +67,6 @@ const pickedColor = (color, colors) => {
     if (ran>=colors.size){
         ran -= 1;
     }
-    console.log(Array.from(colors)[8])
     return Array.from(colors)[ran];
 }
 
