@@ -2,8 +2,10 @@ const express = require("express")
 const router = express.Router()
 
 const deleteRoom = require("./deleteRoom")
+const deleteGame = require("./deleteGame")
 
-router.get("/", deleteRoom);
+router.get("/room", deleteRoom);
+router.get("/game", deleteGame);
 
 const app = express()
 const cors = require("cors")
