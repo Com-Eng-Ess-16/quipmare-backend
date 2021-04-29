@@ -14,6 +14,8 @@ module.exports = async (req,res)=>{
             }else if (!!playerId){
                 await dbRef.child(code+"/players/"+playerId).set(null);
                 return res.send("kick " + playerId);
+            }else{
+                return res.send("no player kick");
             }
         } else {
             return res.status(403).send("Ingame progress");
