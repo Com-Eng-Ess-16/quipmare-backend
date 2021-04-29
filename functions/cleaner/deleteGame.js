@@ -2,7 +2,7 @@ const functions = require('firebase-functions');
 const firebase = require("firebase-admin");
 const db = firebase.database()
 
-module.exports = async (req, res) => {
+module.exports = async () => {
     const snap = await db.ref("/room").get();
     const rooms = snap.val();
     const deletedGame = [];
@@ -25,9 +25,7 @@ module.exports = async (req, res) => {
     deletedGame.forEach(game => promises.push(deleteGame(game)));
     await Promise.all(promises)
     functions.logger.info("Cleared game: " + deletedGame);
-    return res.json({
-        deletedGame
-    })
+    return null;
 }
 
 const deleteGame = async (game) => {

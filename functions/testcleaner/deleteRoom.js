@@ -1,8 +1,8 @@
-const firebase = require("firebase-admin");
-const deleteRoom = require("../cleaner/deleteRoom");
+const functions = require('firebase-functions');
+const firebase = require("firebase-admin")
 const db = firebase.database()
-// const deleteRoom = require("./delete")
-module.exports = async (req, res) => {
+
+module.exports = async context => {
     const now = Date.now();
     const late = now - 3600000;
     const snap = await db.ref("/room").get();
@@ -16,7 +16,13 @@ module.exports = async (req, res) => {
     const promises = [];
     deletedRoom.forEach(room => promises.push(deleteRoom(room)));
     await Promise.all(promises)
+    functions.logger.info("Cleared room: " + deletedRoom);
     return res.json({
         deletedRoom
     })
+}
+
+const deleteRoom = async (room) => {
+    const wait = await db.ref("/room/" + room).remove();
+    return wait;
 }
