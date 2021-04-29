@@ -8,21 +8,21 @@ module.exports = async (req,res)=>{
         if (snapshot.val().roomState !== "playing"){
             const players = snapshot.val().players;
             if(Object.keys(players).length > 2){
-                const gameID = roomcode+ "-" +randomString(10);
+                const gameId = roomcode+ "-" +randomString(10);
                 const pairs = randomPlayerPair(Object.keys(players));
                 const playerObject = getPlayerObject(Object.keys(players), pairs);
                 const question = getQuestionObject(pairs);
-                await db.ref("/game/" + gameID).set({
+                await db.ref("/game/" + gameId).set({
                     players: playerObject,
                     question
                 })
                 await db.ref("/room/" + roomcode).update({
-                    gameID,
+                    gameId,
                     roomState: "playing",
                     updateTime: Date.now(),
                 })
                 return res.json({
-                    gameID
+                    gameId
                 });
             } else {
                 return res.status(401).send("Need more players");
