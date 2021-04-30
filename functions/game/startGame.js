@@ -68,11 +68,11 @@ const getPlayerObject = (players, pairs) => {
     })
     pairs.forEach((pair,index) => {
         playerQuestion[pair[0]].questions.push({
-            answer: 0,
+            answer: 'a',
             questionIndex: index,
         })
         playerQuestion[pair[1]].questions.push({
-            answer: 1,
+            answer: 'b',
             questionIndex: index,
         })
     });

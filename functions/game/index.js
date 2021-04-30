@@ -4,9 +4,11 @@ const router = express.Router()
 const startGame = require("./startGame")
 const getGameId = require("./getGameId")
 const getPlayerQuestion = require("./getPlayerQuestion");
+const answerQuestion = require("./answerQuestion");
 
 router.get("/start/:roomcode", startGame);
 router.get("/player/:gameId/:playerId", getPlayerQuestion);
+router.post("/answer/:gameId", answerQuestion);
 router.get("/id/:roomcode", getGameId);
 
 const app = express()

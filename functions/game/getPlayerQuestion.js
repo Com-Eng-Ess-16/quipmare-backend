@@ -1,6 +1,5 @@
 const firebase = require("firebase-admin");
 const db = firebase.database();
-const fs = firebase.firestore();
 
 module.exports = async (req,res)=>{
     const gameid = req.params.gameId;
