@@ -1,5 +1,6 @@
 const firebase = require("firebase-admin");
 const db = firebase.database();
+const fs = firebase.firestore();
 
 module.exports = async (req,res)=>{
     const roomcode = req.params.roomcode;
@@ -8,10 +9,13 @@ module.exports = async (req,res)=>{
         if (snapshot.val().roomState !== "playing"){
             const players = snapshot.val().players;
             if(Object.keys(players).length > 2){
+                const configRef = fs.collection('questions').doc("config")
+                const config = await configRef.get();
+                const numOfQuestion = config.data().last;
                 const gameId = roomcode+ "-" +randomString(10);
                 const pairs = randomPlayerPair(Object.keys(players));
                 const playerObject = getPlayerObject(Object.keys(players), pairs);
-                const question = getQuestionObject(pairs);
+                const question = getQuestionObject(pairs, numOfQuestion);
                 await db.ref("/game/" + gameId).set({
                     players: playerObject,
                     question
@@ -75,8 +79,8 @@ const getPlayerObject = (players, pairs) => {
     return playerQuestion;
 }
 
-const getQuestionObject = (pairs) => {
-    const questions = getQuestionsId(pairs);
+const getQuestionObject = (pairs, numOfQuestion) => {
+    const questions = getQuestionsId(pairs, numOfQuestion);
     const question = {};
     pairs.forEach((pair,index) => {
         question[index] = {
@@ -98,11 +102,11 @@ const getQuestionObject = (pairs) => {
     return question;
 }
 
-const getQuestionsId = (pairs) => {
+const getQuestionsId = (pairs, numOfQuestion) => {
     const questions = new Set();
     const number = pairs.length;
     while (questions.size<number){
-        questions.add(Math.floor(Math.random()*20));
+        questions.add(Math.floor(Math.random()*numOfQuestion));
     }
     return Array.from(questions);
 }
