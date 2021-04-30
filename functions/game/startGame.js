@@ -15,10 +15,10 @@ module.exports = async (req,res)=>{
                 const gameId = roomcode+ "-" +randomString(10);
                 const pairs = randomPlayerPair(Object.keys(players));
                 const playerObject = getPlayerObject(Object.keys(players), pairs);
-                const question = getQuestionObject(pairs, numOfQuestion);
+                const questions = await getQuestionObject(pairs, numOfQuestion);
                 await db.ref("/game/" + gameId).set({
                     players: playerObject,
-                    question
+                    questions
                 })
                 await db.ref("/room/" + roomcode).update({
                     gameId,
@@ -62,29 +62,34 @@ const getPlayerObject = (players, pairs) => {
     const playerQuestion = {};
     players.forEach(player => {
         playerQuestion[player] = {
-        question:[],
+        questions:[],
         point: 0,
     };
     })
     pairs.forEach((pair,index) => {
-        playerQuestion[pair[0]].question.push({
+        playerQuestion[pair[0]].questions.push({
             answer: 0,
-            question: index,
+            questionIndex: index,
         })
-        playerQuestion[pair[1]].question.push({
+        playerQuestion[pair[1]].questions.push({
             answer: 1,
-            question: index,
+            questionIndex: index,
         })
     });
     return playerQuestion;
 }
 
-const getQuestionObject = (pairs, numOfQuestion) => {
+const getQuestionObject = async (pairs, numOfQuestion) => {
     const questions = getQuestionsId(pairs, numOfQuestion);
     const question = {};
-    pairs.forEach((pair,index) => {
+    for (let index=0; index<questions.length;index++){
+        const pair = pairs[index];
+        const questionRef = fs.collection('questions').doc(questions[index].toString());
+        const doc = await questionRef.get();
+        console.log(questions[index],doc.data());
         question[index] = {
             questionId: questions[index],
+            questionPrompt: doc.data().question,
             a: {
                 vote: 0,
                 owner: pair[0],
@@ -98,7 +103,7 @@ const getQuestionObject = (pairs, numOfQuestion) => {
                 voice: "",
             },
         }
-    })
+    };
     return question;
 }
 
@@ -106,7 +111,7 @@ const getQuestionsId = (pairs, numOfQuestion) => {
     const questions = new Set();
     const number = pairs.length;
     while (questions.size<number){
-        questions.add(Math.floor(Math.random()*numOfQuestion));
+        questions.add(Math.ceil(Math.random()*numOfQuestion));
     }
     return Array.from(questions);
 }

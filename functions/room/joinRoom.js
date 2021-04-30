@@ -5,7 +5,7 @@ module.exports = async (req,res)=>{
     const colors = new Set([0,1,2,3,4,5,6,7]);
     const code = req.params.roomcode;
     const data = req.body
-    let {username, color, type} = data;
+    let {username, color, type, deviceId} = data;
     const snapshot = await dbRef.child(code).get();
     const exist = snapshot.exists();
     let playerId = 8;
@@ -18,6 +18,7 @@ module.exports = async (req,res)=>{
                     const specId = randomString(8);
                     await dbRef.child(code).child("spectator").child(specId).set(specId);
                     return res.json({
+                        deviceId,
                         spectateId: specId,
                         type: "spectate"
                     })
@@ -32,6 +33,7 @@ module.exports = async (req,res)=>{
                         const createSnap = await dbRef.child(code).child("players").child(i).set({
                             username,
                             color, 
+                            deviceId,
                         })
                         break
                     }
