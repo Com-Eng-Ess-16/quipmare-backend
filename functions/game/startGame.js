@@ -1,4 +1,5 @@
 const firebase = require("firebase-admin");
+const addTime = require("../helper/addTime");
 const db = firebase.database();
 const fs = firebase.firestore();
 
@@ -22,6 +23,7 @@ module.exports = async (req,res)=>{
                     gameState: "answer",
                     questionState: 0,
                     roundRemain: 1,
+                    deadlineTime: addTime(75),
                 })
                 await db.ref("/room/" + roomcode).update({
                     gameId,

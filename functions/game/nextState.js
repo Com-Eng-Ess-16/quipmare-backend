@@ -31,6 +31,14 @@ module.exports = async (req,res)=>{
                 }
             }
         }
+        const timeDict = {
+            "voting": 25,
+            "result": 15,
+            "score": 15,
+        }
+        if (!!timeDict[nextState]){
+            await db.ref("/game/" + gameid + "/deadlineTime").set(timeDict[nextState]);
+        }
         await db.ref("/game/" + gameid + "/gameState").set(nextState);
         return res.json({
             nextState
