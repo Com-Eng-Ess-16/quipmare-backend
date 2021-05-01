@@ -18,7 +18,9 @@ module.exports = async (req,res)=>{
                 const questions = await getQuestionObject(pairs, numOfQuestion);
                 await db.ref("/game/" + gameId).set({
                     players: playerObject,
-                    questions
+                    questions,
+                    gameState: "answer",
+                    questionState: 0,
                 })
                 await db.ref("/room/" + roomcode).update({
                     gameId,
@@ -86,18 +88,17 @@ const getQuestionObject = async (pairs, numOfQuestion) => {
         const pair = pairs[index];
         const questionRef = fs.collection('questions').doc(questions[index].toString());
         const doc = await questionRef.get();
-        console.log(questions[index],doc.data());
         question[index] = {
             questionId: questions[index],
             questionPrompt: doc.data().question,
             a: {
-                vote: 0,
+                vote: [],
                 owner: pair[0],
                 answer: "",
                 voice: "",
             },
             b: {
-                vote: 0,
+                vote: [],
                 owner: pair[1],
                 answer: "",
                 voice: "",

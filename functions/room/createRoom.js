@@ -11,6 +11,7 @@ module.exports = async (req,res)=>{
     }
     dbRef.child(code).set({
         roomState: "waiting",
+        allPlayer: 0,
         updateTime: Date.now(),
     })
     return res.json({

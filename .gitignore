@@ -67,3 +67,4 @@ node_modules/
 .runtimeconfig.json
 
 .DS_STORE
+.saved-data

@@ -16,9 +16,8 @@ module.exports = async (req,res)=>{
             if (!!players){
                 if (Object.keys(players).length >= 8 || type !== "player" || value.roomState !== "waiting"){
                     const specId = randomString(8);
-                    await dbRef.child(code).child("spectator").child(specId).set(specId);
+                    await dbRef.child(code).child("spectator").child(specId).set(deviceId);
                     return res.json({
-                        deviceId,
                         spectateId: specId,
                         type: "spectate"
                     })
@@ -44,6 +43,7 @@ module.exports = async (req,res)=>{
                     0: {
                         username,
                         color,
+                        deviceId,
                     }
                 })
             }
