@@ -1,4 +1,6 @@
 const firebase = require("firebase-admin");
+const addTime = require("../helper/addTime");
+const calculateScore = require("../helper/calculateScore");
 const db = firebase.database();
 
 module.exports = async (req,res)=>{
@@ -31,13 +33,16 @@ module.exports = async (req,res)=>{
                 }
             }
         }
+        if(nextState === "result"){
+            await calculateScore(gameid, questionState);
+        }
         const timeDict = {
             "voting": 25,
             "result": 15,
             "score": 15,
         }
         if (!!timeDict[nextState]){
-            await db.ref("/game/" + gameid + "/deadlineTime").set(timeDict[nextState]);
+            await db.ref("/game/" + gameid + "/deadlineTime").set(addTime(timeDict[nextState]));
         }
         await db.ref("/game/" + gameid + "/gameState").set(nextState);
         return res.json({
