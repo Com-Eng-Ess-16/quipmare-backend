@@ -4,6 +4,9 @@ const firebase = require("firebase-admin");
 exports.player = functions.database.ref('/room/{roomId}/players/{player}').onWrite(async (change, context) => {
   const roomId = context.params.roomId;
   const allPlayerSnap = await firebase.database().ref("/room/"+roomId+"/allPlayer").get();
+  if (!allPlayerSnap.exists()){
+    return null;
+  }
   let allPlayer = allPlayerSnap.val();
   //Delete
   if (!change.after.exists()){
@@ -18,6 +21,9 @@ exports.player = functions.database.ref('/room/{roomId}/players/{player}').onWri
 exports.spectate = functions.database.ref('/room/{roomId}/spectator/{spectate}').onWrite(async (change, context) => {
   const roomId = context.params.roomId;
   const allPlayerSnap = await firebase.database().ref("/room/"+roomId+"/allPlayer").get();
+  if (!allPlayerSnap.exists()){
+    return null;
+  }
   let allPlayer = allPlayerSnap.val();
   //Delete
   if (!change.after.exists()){

@@ -21,6 +21,7 @@ module.exports = async (req,res)=>{
                     questions,
                     gameState: "answer",
                     questionState: 0,
+                    roundRemain: 1,
                 })
                 await db.ref("/room/" + roomcode).update({
                     gameId,
