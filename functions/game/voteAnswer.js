@@ -13,13 +13,17 @@ module.exports = async (req,res)=>{
         }
         const roomSnapshot = await db.ref("/room/" + gameid.slice(0,6)).get();
         const allPlayer = roomSnapshot.val().allPlayer
-        const allVote = getAllvote(snapshot.val().questions[questionIndex]);
+        const questionData = snapshot.val().questions[questionIndex]
+        const allVote = getAllvote(questionData);
         if (allVote.set.has(playerId)){
             return res.status(403).send("Already Vote");
         }
+        if (playerId == questionData.a.owner || playerId == questionData.b.owner ){
+            return res.status(403).send("Can't vote your own question");
+        }
         allVote[answer].push(playerId);
         await db.ref("/game/" + gameid + "/questions/" + questionIndex + "/" + answer + "/vote").set(allVote[answer]);
-        if (allPlayer <= allVote.set.size){
+        if (allPlayer-3 <= allVote.set.size){
             calculateScore(gameid, questionIndex);
             await db.ref("/game/" + gameid + "/gameState").set("result");
             return res.send("Final Vote");

@@ -9,7 +9,7 @@ module.exports = async (gameid, questionIndex) => {
     const voteB = snapshot.val().b.vote ? snapshot.val().b.vote.length : 0;
     let winnerBonus = 0;
     const totalVote = voteA + voteB ? voteA + voteB : 1;
-    if (totalVote >= allPlayer){
+    if (totalVote >= allPlayer-2){
         winnerBonus = 250;
     }
     let pointA = parseInt(voteA / totalVote * 1000)

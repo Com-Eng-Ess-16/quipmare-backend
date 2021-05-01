@@ -1,6 +1,7 @@
 const firebase = require("firebase-admin");
 const addTime = require("../helper/addTime");
 const calculateScore = require("../helper/calculateScore");
+const convertDataToFirestore = require("../helper/convertDataToFirestore");
 const db = firebase.database();
 
 module.exports = async (req,res)=>{
@@ -27,6 +28,8 @@ module.exports = async (req,res)=>{
                 const roundRemain = snapshot.val().roundRemain;
                 if (roundRemain-1 <= 0){
                     nextState = "podium"
+                    const id = await convertDataToFirestore(snapshot.val().questions);
+                    await db.ref("/game/" + gameid + "/archiveId").set(id);
                 }else{
                     nextState = "answer"
                     await db.ref("/game/" + gameid + "/roundRemain").set(roundRemain-1);
