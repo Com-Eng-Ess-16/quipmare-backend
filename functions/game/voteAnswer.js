@@ -1,6 +1,7 @@
 const functions = require('firebase-functions');
 const firebase = require("firebase-admin");
 const calculateScore = require("../helper/calculateScore");
+const nextState = require('../helper/nextState');
 const db = firebase.database();
 
 module.exports = async (req,res)=>{
@@ -26,9 +27,7 @@ module.exports = async (req,res)=>{
         allVote[answer].push(playerId);
         await db.ref("/game/" + gameid + "/questions/" + questionIndex + "/" + answer + "/vote").set(allVote[answer]);
         if (allPlayer-3 <= allVote.set.size){
-            await calculateScore(gameid, questionIndex);
-            await db.ref("/game/" + gameid + "/gameState").set("result");
-            await db.ref("/game/" + gameid + "/deadlineTime").set(addTime(15));
+            await nextState(gameid);
             return res.send("Final Vote");
         }
         return res.send("Success Vote");

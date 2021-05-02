@@ -2,6 +2,7 @@ const functions = require('firebase-functions');
 const firebase = require("firebase-admin");
 const answerToVoice = require('../helper/answerToVoice');
 const addTime = require('../helper/addTime');
+const nextState = require('../helper/nextState');
 const db = firebase.database();
 
 module.exports = async (req,res)=>{
@@ -21,8 +22,7 @@ module.exports = async (req,res)=>{
         const answerOrder = question.answer;
         await db.ref("/game/" + gameid + "/questions/" + questionIndex + "/" + answerOrder + "/answer").set(answer);
         if (answerNumber + 1 >= Object.keys(players).length*2 ) {
-            await db.ref("/game/" + gameid + "/deadlineTime").set(addTime(35));
-            await db.ref("/game/" + gameid + "/gameState").set("voting");
+            await nextState(gameid);
         }
         await db.ref("/game/" + gameid + "/answerNumber").set(answerNumber + 1);
         

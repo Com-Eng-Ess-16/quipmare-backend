@@ -11,7 +11,7 @@ module.exports = async (gameId) => {
         const answerA = questions[i].a.answer;
         const answerB = questions[i].b.answer;
         // "ssml": "<speak> ระหว่าง <break time=\"200ms\"/> ตัวเลือกที่ 1 <break time=\"200ms\"/> หรือว่า <break time=\"200ms\"/> ตัวเลือกที่ 2 </speak>"
-        const message = "<speak> ระหว่าง <break time=\"200ms\"/> "+answerA+" <break time=\"200ms\"/> หรือว่า <break time=\"200ms\"/> "+answerB+" </speak>"
+        const message = "<speak> ระหว่าง <break time=\"100ms\"/> "+answerA+" <break time=\"100ms\"/> หรือว่า <break time=\"100ms\"/> "+answerB+" </speak>"
         const result = await texttoSpeech(message, "ssml");
         const link = await uploadSound(result.audioContent, gameId + "/" +i +".mp3")
         await db.ref("/game/" + gameId + "/questions/" + i + "/voiceUrl").set(link);
