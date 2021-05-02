@@ -8,7 +8,6 @@ module.exports = async (req,res)=>{
     const data = req.body
     let {playerId} = data;
     functions.logger.debug("kickPlayer " + playerId);
-    console.log(snapshot.val())
     if (snapshot.exists()){
         if (snapshot.val().roomState === "playing"){
             const snapshotGame = await firebase.database().ref("/game/" + snapshot.val().gameId + "/gameState").get()
