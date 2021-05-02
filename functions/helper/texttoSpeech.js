@@ -3,13 +3,10 @@ const axios = require("axios");
 
 module.exports = async (message, type) => {
     const url = "https://texttospeech.googleapis.com/v1/text:synthesize?key=" + functions.config().api.key;
-    let inputDict = {};
-    inputDict[type] = message; 
+    let input = {};
+    input[type] = message; 
     const data = {
-        "input": {
-            // "ssml": "<speak> ระหว่าง <break time=\"200ms\"/> ตัวเลือกที่ 1 <break time=\"200ms\"/> หรือว่า <break time=\"200ms\"/> ตัวเลือกที่ 2 </speak>"
-            inputDict
-          },
+        input,
         // voice: {languageCode: 'ja-JP', ssmlGender: 'FEMALE'},
         "voice": {
             "languageCode": "th-TH",
@@ -18,7 +15,7 @@ module.exports = async (message, type) => {
         audioConfig: {
             audioEncoding: 'MP3',
             "pitch": -0.4,
-            "speakingRate": 1},
+            "speakingRate": 0.85},
       }
     const response = await axios.post(url, data)
     return response.data

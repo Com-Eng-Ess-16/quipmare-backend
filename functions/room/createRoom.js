@@ -1,8 +1,9 @@
+const functions = require('firebase-functions');
 const firebase = require("firebase-admin");
 const dbRef = firebase.database().ref("/room");
 
 module.exports = async (req,res)=>{
-
+    functions.logger.debug("createRoom");
     let code = randomString(6);
     let snapshot = await dbRef.child(code).get();
     while (snapshot.exists()){

@@ -1,3 +1,4 @@
+const functions = require('firebase-functions');
 const firebase = require("firebase-admin");
 const addTime = require("../helper/addTime");
 const db = firebase.database();
@@ -6,6 +7,7 @@ const fs = firebase.firestore();
 module.exports = async (req,res)=>{
     const roomcode = req.params.roomcode;
     const snapshot = await db.ref("/room/" + roomcode).get();
+    functions.logger.info("startGame " + roomcode);
     if (snapshot.exists()){
         if (snapshot.val().roomState !== "playing"){
             const players = snapshot.val().players;
@@ -30,6 +32,7 @@ module.exports = async (req,res)=>{
                     roomState: "playing",
                     updateTime: Date.now(),
                 })
+                functions.logger.info("Create game: " + gameId);
                 return res.json({
                     gameId
                 });
@@ -98,14 +101,13 @@ const getQuestionObject = async (pairs, numOfQuestion) => {
                 vote: [],
                 owner: pair[0],
                 answer: "",
-                voice: "",
             },
             b: {
                 vote: [],
                 owner: pair[1],
                 answer: "",
-                voice: "",
             },
+            voiceUrl: "",
         }
     };
     return question;

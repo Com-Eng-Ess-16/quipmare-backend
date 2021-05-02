@@ -11,7 +11,7 @@ module.exports = async (gameid, questionIndex) => {
     const voteB = voterB.length
     let winnerBonus = 100;
     const totalVote = voteA + voteB ? voteA + voteB : 1;
-    const playerVote = voteA.concat(voteB).filter(a => {return a.toString().length< 2}).length
+    const playerVote = voterA.concat(voterB).filter(a => {return a.toString().length< 2}).length
     if (playerVote >= allPlayer-2){
         winnerBonus = 250; 
     }

@@ -1,3 +1,4 @@
+const functions = require('firebase-functions');
 const firebase = require("firebase-admin");
 const addTime = require("../helper/addTime");
 const calculateScore = require("../helper/calculateScore");
@@ -47,6 +48,7 @@ module.exports = async (req,res)=>{
         if (!!timeDict[nextState]){
             await db.ref("/game/" + gameid + "/deadlineTime").set(addTime(timeDict[nextState]));
         }
+        functions.logger.info("nextState " + gameid + " " + nextState);
         await db.ref("/game/" + gameid + "/gameState").set(nextState);
         return res.json({
             nextState

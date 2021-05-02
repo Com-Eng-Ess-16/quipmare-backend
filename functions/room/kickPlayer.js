@@ -1,3 +1,4 @@
+const functions = require('firebase-functions');
 const firebase = require("firebase-admin");
 const dbRef = firebase.database().ref("/room");
 
@@ -6,6 +7,7 @@ module.exports = async (req,res)=>{
     const snapshot = await dbRef.child(code).get();
     const data = req.body
     let {playerId} = data;
+    functions.logger.debug("kickPlayer " + playerId);
     if (snapshot.exists()){
         if (snapshot.val().roomState === "playing"){
             const snapshotGame = await firebase.database().ref("/game/" + snapshot.val().gameId + "gameState").get()
