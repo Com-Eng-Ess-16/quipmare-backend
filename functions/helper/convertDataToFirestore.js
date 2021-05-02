@@ -13,6 +13,9 @@ module.exports = async (questions) => {
             b
         })
     }
-    const docRef = await fs.collection("archive").add({data});
+    const docRef = await fs.collection("archive").add({
+        data,
+        timeCreated: firebase.firestore.Timestamp.now(),
+    });
     return docRef.id
 }

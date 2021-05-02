@@ -10,11 +10,13 @@ const game = require("./game");
 const question = require("./question");
 const cleaner = require("./cleaner");
 const testcleaner = require("./testcleaner");
+const archive = require("./archive");
 
 exports.room = functions.region("asia-east2").https.onRequest(room);
 exports.game = functions.region("asia-east2").https.onRequest(game);
 exports.question = functions.region("asia-east2").https.onRequest(question);
 exports.database = require("./database");
+exports.archive = functions.region("asia-east2").https.onRequest(archive);
 exports.testcleaner = functions.region("asia-east2").https.onRequest(testcleaner);
 exports.cleaner = functions
     .region("asia-east2")
