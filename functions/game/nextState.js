@@ -30,7 +30,6 @@ module.exports = async (req,res)=>{
                     nextState = "podium"
                     const id = await convertDataToFirestore(snapshot.val().questions);
                     await db.ref("/game/" + gameid + "/archiveId").set(id);
-                    await db.ref("/room/" + gameid.slice(0,6) + "/roomState").set("finishing");
                 }else{
                     nextState = "answer"
                     await db.ref("/game/" + gameid + "/roundRemain").set(roundRemain-1);
