@@ -40,7 +40,7 @@ module.exports = async (req,res)=>{
             await calculateScore(gameid, questionState);
         }
         const timeDict = {
-            "voting": 40,
+            "voting": 35,
             "result": 15,
             "score": 15,
         }

@@ -4,13 +4,16 @@ const db = firebase.database();
 module.exports = async (gameid, questionIndex) => {
     const snapshot = await db.ref("/game/" + gameid + "/questions/" + questionIndex).get();
     const roomSnapshot = await db.ref("/room/" + gameid.slice(0,6)).get();
-    const allPlayer = roomSnapshot.val().allPlayer;
-    const voteA = snapshot.val().a.vote ? snapshot.val().a.vote.length : 0;
-    const voteB = snapshot.val().b.vote ? snapshot.val().b.vote.length : 0;
-    let winnerBonus = 0;
+    const allPlayer = Object.keys(roomSnapshot.val().players).length;
+    const voterA = snapshot.val().a.vote ? snapshot.val().a.vote: [];
+    const voterB = snapshot.val().b.vote ? snapshot.val().b.vote: [];
+    const voteA = voterA.length
+    const voteB = voterB.length
+    let winnerBonus = 100;
     const totalVote = voteA + voteB ? voteA + voteB : 1;
-    if (totalVote >= allPlayer-2){
-        winnerBonus = 250;
+    const playerVote = voteA.concat(voteB).filter(a => {return a.toString().length< 2}).length
+    if (playerVote >= allPlayer-2){
+        winnerBonus = 250; 
     }
     let pointA = parseInt(voteA / totalVote * 1000)
     let pointB = parseInt(voteB / totalVote * 1000)
