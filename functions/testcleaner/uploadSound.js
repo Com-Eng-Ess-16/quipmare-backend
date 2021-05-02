@@ -1,8 +1,7 @@
 const functions = require('firebase-functions');
 const firebase = require("firebase-admin")
-const storage = require('@google-cloud/storage')
 const storageRef = firebase.storage().bucket();
-const soundBase64 = functions.config().test.base64Sound
+const soundBase64 = functions.config().test.base64sound
 module.exports = async (req, res) => {
     if(!soundBase64){
         return res.status(401).send("For test");
