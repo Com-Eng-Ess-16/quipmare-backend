@@ -2,7 +2,8 @@ const functions = require('firebase-functions');
 const firebase = require("firebase-admin");
 firebase.initializeApp({
     databaseURL: functions.config().project.databaseurl,
-    storageBucket: functions.config().project.storagebucket
+    storageBucket: functions.config().project.storagebucket,
+    apiKey: functions.config().project.apikey
 })
 
 const room = require("./room");

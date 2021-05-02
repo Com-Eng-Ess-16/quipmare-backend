@@ -30,6 +30,7 @@ module.exports = async (req,res)=>{
                     nextState = "podium"
                     const id = await convertDataToFirestore(snapshot.val().questions);
                     await db.ref("/game/" + gameid + "/archiveId").set(id);
+                    await db.ref("/room/" + gameid.slice(0,6) + "/roomState").set("finishing");
                 }else{
                     nextState = "answer"
                     await db.ref("/game/" + gameid + "/roundRemain").set(roundRemain-1);
@@ -40,7 +41,7 @@ module.exports = async (req,res)=>{
             await calculateScore(gameid, questionState);
         }
         const timeDict = {
-            "voting": 25,
+            "voting": 40,
             "result": 15,
             "score": 15,
         }
