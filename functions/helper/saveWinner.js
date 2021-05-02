@@ -11,6 +11,7 @@ module.exports = async (gameid)=>{
         for (player in Object.keys(players)){
             score.push({
                 username: playersData[player].username,
+                color: playersData[player].color,
                 playerId: player,
                 point: players[player].point,
             });
@@ -19,7 +20,6 @@ module.exports = async (gameid)=>{
             return b.point - a.point;
         })
         const winner = score[0];
-        winner.color = playersData[player].color
         await db.ref("/game/" + gameid + "/winner").set(winner);
         return winner;
     }else{
