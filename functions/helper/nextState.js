@@ -3,6 +3,7 @@ const firebase = require("firebase-admin");
 const addTime = require("../helper/addTime");
 const calculateScore = require("../helper/calculateScore");
 const convertDataToFirestore = require("../helper/convertDataToFirestore");
+const saveWinner = require('./saveWinner');
 const db = firebase.database();
 
 module.exports = async (gameid)=>{
@@ -30,6 +31,7 @@ module.exports = async (gameid)=>{
                 if (roundRemain-1 <= 0){
                     nextState = "podium"
                     const id = await convertDataToFirestore(snapshot.val().questions);
+                    await saveWinner(gameid);
                     await db.ref("/game/" + gameid + "/archiveId").set(id);
                 }else{
                     nextState = "answer"

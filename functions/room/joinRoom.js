@@ -7,7 +7,7 @@ module.exports = async (req,res)=>{
     const code = req.params.roomcode;
     const data = req.body
     let {username, color, type, deviceId} = data;
-    functions.logger.debug("joinRoom ",data);
+    functions.logger.debug("joinRoom ", code, username);
     const snapshot = await dbRef.child(code).get();
     const exist = snapshot.exists();
     let playerId = 8;
