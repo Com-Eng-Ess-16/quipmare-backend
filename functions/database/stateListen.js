@@ -8,7 +8,6 @@ exports.processTts = functions.database.ref('/game/{gameId}/processVoice').onWri
   const gameId = context.params.gameId;
   if (change.after.val() === "true"){
     await answerToVoice(gameId);
-    await nextState(gameId);
     return await db.ref("/game/"+gameId+"/processVoice").set(null);
   }else{
     return null;

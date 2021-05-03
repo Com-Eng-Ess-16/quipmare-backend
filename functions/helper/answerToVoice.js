@@ -15,6 +15,9 @@ module.exports = async (gameId) => {
         const result = await texttoSpeech(message, "ssml");
         const link = await uploadSound(result.audioContent, gameId + "/" +i +".mp3")
         await db.ref("/game/" + gameId + "/questions/" + i + "/voiceUrl").set(link);
+        if (i == 0){
+            await nextState(gameId);
+        }
     }
 }
 
