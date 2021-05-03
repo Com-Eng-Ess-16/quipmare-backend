@@ -2,6 +2,7 @@ const functions = require('firebase-functions');
 const firebase = require("firebase-admin");
 const texttoSpeech = require('./texttoSpeech');
 const uploadSound = require('./uploadSound');
+const nextState = require('../helper/nextState');
 const db = firebase.database();
 
 module.exports = async (gameId) => {
