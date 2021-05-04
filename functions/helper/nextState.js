@@ -47,8 +47,8 @@ module.exports = async (gameid)=>{
         }
         const timeDict = {
             "voting": 35,
-            "result": 15,
-            "score": 15,
+            "result": 7,
+            "score": 7,
         }
         if (!!timeDict[nextState]){
             await db.ref("/game/" + gameid + "/deadlineTime").set(addTime(timeDict[nextState]));
