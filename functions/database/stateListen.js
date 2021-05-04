@@ -17,7 +17,7 @@ exports.processTts = functions.database.ref('/game/{gameId}/processVoice').onWri
 exports.processVote = functions.database.ref('/game/{gameId}/questions/{questionId}/{answer}/vote/{playerId}').onWrite(async (change, context) => {
   const gameId = context.params.gameId;
   const questionId = context.params.questionId;
-  if (!change.after.val()){
+  if (!change.before.val()){
     const roomSnapshot = await db.ref("/room/" + gameId.slice(0,6)).get();
     const voteCountSnap = await db.ref("/game/"+gameId+"/questions/"+questionId+"/voteCount").get();
     const voteCount = voteCountSnap.val();
