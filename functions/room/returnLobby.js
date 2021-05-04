@@ -15,6 +15,7 @@ module.exports = async (req,res)=>{
         await db.ref("/room/" + code).update({
             roomState: "waiting",
             gameId: null,
+            updateTime: Date.now(),
         });
         return res.send("Return to Lobby");
     }else{

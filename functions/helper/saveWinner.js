@@ -9,6 +9,9 @@ module.exports = async (gameid)=>{
         const score = [];
         const players = snapshot.val();
         for (player in Object.keys(players)){
+            if (!players[player]){
+                continue;
+            }
             score.push({
                 username: playersData[player].username,
                 color: playersData[player].color,

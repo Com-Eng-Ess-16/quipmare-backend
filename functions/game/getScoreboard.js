@@ -10,6 +10,9 @@ module.exports = async (req,res)=>{
         const score = [];
         const players = snapshot.val();
         for (player in Object.keys(players)){
+            if (!players[player]){
+                continue;
+            }
             score.push({
                 username: playersData[player].username,
                 playerId: player,

@@ -24,8 +24,7 @@ module.exports = async (req,res)=>{
         if (playerId == questionData.a.owner || playerId == questionData.b.owner ){
             return res.status(403).send("Can't vote your own question");
         }
-        allVote[answer].push(playerId);
-        await db.ref("/game/" + gameid + "/questions/" + questionIndex + "/" + answer + "/vote").set(allVote[answer]);
+        await db.ref("/game/" + gameid + "/questions/" + questionIndex + "/" + answer + "/vote/" + playerId).set(true);
         if (allPlayer-3 <= allVote.set.size){
             await nextState(gameid);
             return res.send("Final Vote");
@@ -40,10 +39,12 @@ const getAllvote = (question) => {
     let voteA = question['a']["vote"];
     let voteB = question['b']["vote"];
     if (!voteA){
-        voteA = []
+        voteA = {}
     }
     if (!voteB){
-        voteB = []
+        voteB = {}
     }
-    return {a: voteA, b: voteB, set: new Set(voteA.concat(voteB))};
+    const pvoteA = Object.keys(voteA);
+    const pvoteB = Object.keys(voteB)
+    return {a: pvoteA, b: pvoteB, set: new Set(pvoteA.concat(pvoteB))};
 }
