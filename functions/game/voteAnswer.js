@@ -14,21 +14,15 @@ module.exports = async (req,res)=>{
         if (snapshot.val().gameState !== "voting"){
             return res.status(400).send("Can't Vote now");
         }
-        const roomSnapshot = await db.ref("/room/" + gameid.slice(0,6)).get();
-        const allPlayer = roomSnapshot.val().allPlayer
         const questionData = snapshot.val().questions[questionIndex]
         const allVote = getAllvote(questionData);
-        if (allVote.set.has(playerId)){
+        if (allVote.has(playerId)){
             return res.status(403).send("Already Vote");
         }
         if (playerId == questionData.a.owner || playerId == questionData.b.owner ){
             return res.status(403).send("Can't vote your own question");
         }
         await db.ref("/game/" + gameid + "/questions/" + questionIndex + "/" + answer + "/vote/" + playerId).set(true);
-        if (allPlayer-3 <= allVote.set.size){
-            await nextState(gameid);
-            return res.send("Final Vote");
-        }
         return res.send("Success Vote");
     }else{
         return res.status(404).send("GameId not found");
@@ -45,6 +39,6 @@ const getAllvote = (question) => {
         voteB = {}
     }
     const pvoteA = Object.keys(voteA);
-    const pvoteB = Object.keys(voteB)
-    return {a: pvoteA, b: pvoteB, set: new Set(pvoteA.concat(pvoteB))};
+    const pvoteB = Object.keys(voteB);
+    return new Set(pvoteA.concat(pvoteB));
 }

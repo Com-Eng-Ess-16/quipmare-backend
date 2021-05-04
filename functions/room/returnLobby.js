@@ -10,7 +10,7 @@ module.exports = async (req,res)=>{
     if (snapshot.exists()){
         const data = snapshot.val();
         const gameId = data.gameId;
-        functions.logger.debug("Delete game " + gameId);
+        functions.logger.info("Delete game " + gameId);
         await db.ref("/game/" + gameId).set(null);
         await db.ref("/room/" + code).update({
             roomState: "waiting",

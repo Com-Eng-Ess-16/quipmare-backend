@@ -9,7 +9,7 @@ module.exports = async (req,res)=>{
         const playersData = roomSnapshot.val().players;
         const score = [];
         const players = snapshot.val();
-        for (player in Object.keys(players)){
+        for (let player =0; player<players.length; player++){
             if (!players[player]){
                 continue;
             }
